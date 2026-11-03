@@ -1,4 +1,12 @@
-# NETMAP
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/33b8b842-62bc-4f74-971e-fba795363607" width="300" height="300">
+
+
+
+<h1 align="center">NETMAP</h1>
+
+## WEBAPP: https://0xbitx.github.io/Netmap
 
 NETMAP is a standalone, browser-based packet analyzer with a Wireshark-style workflow.
 It gives you a complete investigation surface in one tab: open a `pcap` or `pcapng`
