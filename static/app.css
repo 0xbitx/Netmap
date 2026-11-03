@@ -1,0 +1,557 @@
+:root {
+    --bg-primary: #050505;
+    --bg-secondary: #0a0a0a;
+    --bg-tertiary: #111111;
+    --bg-card: #0d0d0f;
+    --bg-hover: #161619;
+    --border: #232327;
+    --border-active: #3a3a42;
+    --text-primary: #eef0f3;
+    --text-secondary: #a7adb8;
+    --text-dim: #717885;
+    --accent: #a9aeb5;
+    --accent-dim: #7f858d;
+    --accent-hover: #ffffff;
+    --red: #f87171;
+    --red-dim: #7f1d1d;
+    --yellow: #fbbf24;
+    --blue: #a9aeb5;
+    --green: #a9aeb5;
+    --purple: #b8bcc2;
+    --complete: #34d399;
+    --complete-ink: #06120a;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --transition: 0.12s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    color-scheme: dark;
+    font-size: 18px;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    font-family: var(--font-mono);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    max-width: 100vw;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-hover);
+}
+
+code {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.08em 0.35em;
+    font-size: 0.92em;
+}
+
+kbd {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    border: 1px solid var(--border-active);
+    border-radius: 4px;
+    padding: 0.08rem 0.35rem;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
+.pv-shell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(1160px, 100%);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.pv-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.pv-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 0;
+}
+
+.pv-mark {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--border-active);
+    border-radius: 6px;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
+.pv-mark svg {
+    width: 19px;
+    height: 19px;
+}
+
+.pv-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+}
+
+.pv-ver {
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.1rem 0.45rem;
+}
+
+.pv-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.pv-local {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.66rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+}
+
+.pv-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--complete);
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+}
+
+.pv-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4.5rem;
+    padding: 4rem 0 5rem;
+}
+
+.pv-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 3rem;
+    align-items: center;
+}
+
+.pv-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 1.1rem;
+}
+
+.pv-hero h1 {
+    font-family: var(--font-sans);
+    font-size: clamp(2.3rem, 6vw, 4.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+}
+
+.pv-hero h1 span {
+    color: var(--text-dim);
+}
+
+.pv-sub {
+    margin-top: 1.4rem;
+    max-width: 34rem;
+    font-size: 0.82rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+}
+
+.pv-sub strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.pv-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.8rem;
+}
+
+.pv-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.73rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-active);
+    border-radius: 5px;
+    padding: 0.62rem 0.95rem;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.pv-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--text-dim);
+}
+
+.pv-btn:focus-visible {
+    outline: 2px solid var(--text-secondary);
+    outline-offset: 2px;
+}
+
+.pv-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.pv-btn.primary {
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+    color: var(--bg-primary);
+}
+
+.pv-btn.primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+.pv-btn.lg {
+    padding: 0.75rem 1.15rem;
+    font-size: 0.76rem;
+}
+
+.pv-btn.ghost {
+    background: transparent;
+}
+
+.pv-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 2rem;
+}
+
+.pv-chip {
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.22rem 0.55rem;
+    background: var(--bg-card);
+}
+
+.pv-panel {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 55%),
+        var(--bg-card);
+    padding: 1.1rem;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+}
+
+.pv-panel::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), transparent 40%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 1px;
+}
+
+.pv-drop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.3rem;
+    min-height: 260px;
+    padding: 2rem 1.2rem;
+    border: 1px dashed var(--border-active);
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition), transform var(--transition);
+}
+
+.pv-drop:hover,
+.pv-drop:focus-visible {
+    border-color: var(--text-dim);
+    background: var(--bg-tertiary);
+    outline: none;
+}
+
+.pv-drop.dragover {
+    border-color: var(--complete);
+    background: rgba(52, 211, 153, 0.05);
+    transform: translateY(-1px);
+}
+
+.pv-drop-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--border-active);
+    border-radius: 50%;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    margin-bottom: 0.6rem;
+}
+
+.pv-drop-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.pv-drop-title {
+    font-family: var(--font-sans);
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.pv-drop-hint {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+}
+
+.pv-formats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+    margin-top: 1.1rem;
+}
+
+.pv-formats .pv-chip {
+    font-size: 0.56rem;
+}
+
+.pv-panel-actions {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.9rem;
+}
+
+.pv-panel-actions .pv-btn {
+    flex: 1;
+}
+
+.pv-error {
+    margin-top: 0.8rem;
+    font-size: 0.68rem;
+    line-height: 1.5;
+    color: var(--red);
+    border: 1px solid var(--red-dim);
+    border-radius: 5px;
+    background: rgba(127, 29, 29, 0.12);
+    padding: 0.55rem 0.65rem;
+}
+
+.pv-error[hidden] {
+    display: none;
+}
+
+.pv-note {
+    margin-top: 0.85rem;
+    font-size: 0.62rem;
+    line-height: 1.55;
+    color: var(--text-dim);
+    text-align: center;
+}
+
+.pv-section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.pv-section-head h2 {
+    font-family: var(--font-sans);
+    font-size: clamp(1.45rem, 3vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+}
+
+.pv-section-note {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    margin-top: 0.55rem;
+    line-height: 1.6;
+}
+
+.pv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+}
+
+.pv-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-card);
+    padding: 1.15rem;
+    transition: border-color var(--transition), background var(--transition);
+}
+
+.pv-card:hover {
+    border-color: var(--border-active);
+    background: var(--bg-tertiary);
+}
+
+.pv-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.55rem;
+}
+
+.pv-card h3 svg {
+    width: 17px;
+    height: 17px;
+    color: var(--text-dim);
+    flex: none;
+}
+
+.pv-card p {
+    font-size: 0.69rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+.pv-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 0 1.8rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.63rem;
+    color: var(--text-dim);
+}
+
+.pv-noscript {
+    margin: 2rem auto;
+    padding: 0.8rem 1rem;
+    max-width: 620px;
+    border: 1px solid var(--red-dim);
+    border-radius: 6px;
+    color: var(--red);
+    font-size: 0.72rem;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .pv-shell {
+        padding: 0 1.25rem;
+    }
+
+    .pv-main {
+        gap: 3.5rem;
+        padding: 2.8rem 0 3.5rem;
+    }
+
+    .pv-hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .pv-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pv-local {
+        display: none;
+    }
+}
+
+@media (max-width: 620px) {
+    .pv-top {
+        flex-wrap: wrap;
+    }
+
+    .pv-top-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .pv-main {
+        padding-top: 2.2rem;
+    }
+
+    .pv-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pv-section-head {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pv-foot {
+        flex-direction: column;
+    }
+
+    .pv-panel-actions {
+        flex-direction: column;
+    }
+}

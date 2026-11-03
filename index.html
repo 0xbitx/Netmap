@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NETMAP is a standalone, browser-based Wireshark-style packet analyzer. Parse pcap or pcapng locally, triage evidence, build an investigation brief, explore a case timeline and entity graph, compare captures, and use an AI analyst you configure yourself.">
+    <meta name="color-scheme" content="dark">
+    <title>NETMAP: read packet captures in your browser</title>
+    <link rel="icon" href="static/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="static/app.css">
+    <link rel="stylesheet" href="static/pcap.css">
+    <link rel="stylesheet" href="static/pcap_ai.css">
+</head>
+<body>
+    <div class="pv-shell">
+        <header class="pv-top">
+            <div class="pv-brand">
+                <span class="pv-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12h4l2.5-6 4 12L16 12h5"/>
+                    </svg>
+                </span>
+                <span class="pv-name">NETMAP</span>
+                <span class="pv-ver">STANDALONE</span>
+            </div>
+            <div class="pv-top-actions">
+                <span class="pv-local"><span class="pv-dot" aria-hidden="true"></span> Local by default</span>
+                <button type="button" class="pv-btn" id="topOpenBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z"/>
+                        <path d="M12 11v5m0-5-2 2m2-2 2 2"/>
+                    </svg>
+                    <span>Open capture</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="pv-main">
+            <section class="pv-hero" aria-labelledby="heroTitle">
+                <div>
+                    <p class="pv-kicker">Browser packet analyzer</p>
+                    <h1 id="heroTitle">Open a capture.<br><span>Read the wire.</span></h1>
+                    <p class="pv-sub">
+                        A complete Wireshark-style analyzer that runs entirely in this tab.
+                        Load a <strong>pcap</strong> or <strong>pcapng</strong> file, filter packets,
+                        dissect every layer, follow streams and turn traffic into statistics.
+                        Run deterministic, evidence-linked triage, pin findings to a case,
+                        compare captures and export a complete investigation brief without
+                        uploading anything. A natural-language filter assistant turns plain
+                        requests into locally validated display filters.
+                        Captures are parsed in this tab. The AI analyst only sends
+                        context to a provider you configure.
+                    </p>
+
+                    <div class="pv-actions">
+                        <button type="button" class="pv-btn primary lg" id="chooseBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 16V4m0 0L7 9m5-5 5 5"/>
+                                <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+                            </svg>
+                            <span>Choose a capture</span>
+                        </button>
+                        <button type="button" class="pv-btn lg ghost" id="sampleBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 3h9l5 5v13H5V3Z"/>
+                                <path d="M14 3v5h5"/>
+                                <path d="m9 14 2 2 4-4"/>
+                            </svg>
+                            <span>Open sample capture</span>
+                        </button>
+                    </div>
+
+                    <div class="pv-chips" aria-label="Supported formats">
+                        <span class="pv-chip">pcap</span>
+                        <span class="pv-chip">pcapng</span>
+                        <span class="pv-chip">Ethernet</span>
+                        <span class="pv-chip">Linux SLL</span>
+                        <span class="pv-chip">raw IP</span>
+                        <span class="pv-chip">IPv4 / IPv6</span>
+                    </div>
+                </div>
+
+                <aside class="pv-panel" aria-label="Open a capture file">
+                    <div class="pv-drop" id="dropZone" role="button" tabindex="0" aria-label="Choose or drop a packet capture file">
+                        <span class="pv-drop-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 16V4m0 0L7 9m5-5 5 5"/>
+                                <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+                            </svg>
+                        </span>
+                        <span class="pv-drop-title">Drop a capture file here</span>
+                        <span class="pv-drop-hint">or click to choose a file</span>
+                        <span class="pv-formats" aria-hidden="true">
+                            <span class="pv-chip">pcap</span>
+                            <span class="pv-chip">pcapng</span>
+                            <span class="pv-chip">up to 128 MB</span>
+                            <span class="pv-chip">virtualized list</span>
+                        </span>
+                    </div>
+                    <div class="pv-panel-actions">
+                        <button type="button" class="pv-btn" id="chooseBtn2">Browse files</button>
+                        <button type="button" class="pv-btn" id="sampleBtn2">Use sample</button>
+                    </div>
+                    <p class="pv-error" id="fileError" role="alert" hidden></p>
+                    <p class="pv-note">Parsed in this tab · AI analyst built in · <kbd>Ctrl</kbd> + <kbd>O</kbd> to open</p>
+                </aside>
+            </section>
+
+            <section aria-labelledby="toolsTitle">
+                <div class="pv-section-head">
+                    <div>
+                        <p class="pv-kicker">Inside the analyzer</p>
+                        <h2 id="toolsTitle">Everything you need to read traffic.</h2>
+                        <p class="pv-section-note">A focused subset of the Wireshark workflow, rebuilt for the browser.</p>
+                    </div>
+                </div>
+                <div class="pv-grid">
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 6h16M4 12h16M4 18h16"/>
+                                <path d="M8 3v6M16 9v6M11 15v6"/>
+                            </svg>
+                            Massive captures
+                        </h3>
+                        <p>No packet-count cap. Open captures up to 128 MB, decode them in chunks with progress, and scroll a virtualized packet list that stays responsive at any size.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/>
+                            </svg>
+                            Display filters
+                        </h3>
+                        <p>Use Wireshark syntax: boolean logic, parentheses, CIDR ranges, quoted strings, <code>contains</code>, <code>matches</code> and hex values.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="m12 3 9 5-9 5-9-5 9-5Z"/>
+                                <path d="m3 12 9 5 9-5"/>
+                                <path d="m3 16 9 5 9-5"/>
+                            </svg>
+                            Deep dissection
+                        </h3>
+                        <p>Explore Ethernet, VLAN, IPv4/IPv6, TCP, UDP, ICMP, ARP, HTTP, DNS, TLS, SSH and NTP down to individual fields.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
+                            </svg>
+                            Statistics
+                        </h3>
+                        <p>Explore a zoomable near-fullscreen radial traffic graph where every connection is its own node and every packet is a dot on its connection halo, ordered by capture time. Rich labels carry endpoints, protocol, packet and byte totals, duration and frame range, with an integrated packet story, a resizable details pane and a resizable map-aware AI chat that can explain the live view and propose map moves for approval. Right-click any packet dot or packet row to select it or ask the map analyst about that exact frame. Protocol hierarchy, conversations, endpoints, expert information and IO graphs are one click away.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 3v3m0 12v3M3 12h3m12 0h3"/>
+                                <circle cx="12" cy="12" r="5"/>
+                                <path d="m9 12 2 2 4-4"/>
+                            </svg>
+                            Local triage
+                        </h3>
+                        <p>Run deterministic detectors for beaconing, scans, DNS anomalies, outbound asymmetry, cleartext credentials, ARP conflicts, lateral movement, rare protocols and long-lived flows. Start from the map toolbar or the <strong>◆ Triage</strong> action in either AI chat. Every finding carries severity, confidence, an explanation, exact frame references, a display filter, entities and a next pivot, with actions to ask the AI, show it on the map, follow the stream, pin it or mark it benign. Detection never leaves the browser.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 4h11l3 3v13H5V4Z"/>
+                                <path d="M8 9h8M8 13h8M8 17h5"/>
+                            </svg>
+                            Investigation brief
+                        </h3>
+                        <p>Click <strong>Investigate</strong> for a ranked, evidence-led brief with an exact frame citation on every claim, next pivots, a case timeline and a clickable entity graph. Export a complete Markdown or standalone HTML report, and let the AI explain the ledger with citation checks. Local detection stays deterministic.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 6h16l-6 7v5l-4 2v-7L4 6Z"/>
+                                <path d="M17 3l.8 2.2L20 6l-2.2.8L17 9l-.8-2.2L14 6l2.2-.8L17 3Z"/>
+                            </svg>
+                            AI filter assistant
+                        </h3>
+                        <p>Describe the packets you want in plain language. The assistant proposes one display filter, then NETMAP validates it locally, reports the exact match count and previews frames before you apply anything. Edit, copy or explain the filter in plain language.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 4h11l3 3v13H5V4Z"/>
+                                <path d="M8 9h8M8 13h8M8 17h5"/>
+                            </svg>
+                            Case file
+                        </h3>
+                        <p>Pin findings, notes and packet references into one browser-local case, then export it as Markdown or JSON with credential values redacted. Evidence frames are added automatically when you pin a finding.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 7h7M4 17h7"/>
+                                <path d="M14 5v14m0-14 4 4m-4-4-4 4"/>
+                                <path d="M20 7h0M20 17h0"/>
+                            </svg>
+                            Capture comparison
+                        </h3>
+                        <p>Load a baseline capture to flag novel hosts, domains, service endpoints and MAC addresses with their first-seen frames and an exact frame filter, without replacing the active viewer.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 7h7a3 3 0 0 1 0 6H7a3 3 0 0 0 0 6h7"/>
+                                <path d="m15 16 3 3-3 3"/>
+                                <path d="m15 2 3 3-3 3"/>
+                            </svg>
+                            Follow streams
+                        </h3>
+                        <p>Reassemble TCP or UDP conversations, switch direction, read ASCII or hex, and see the packet behind every byte.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="2" y="6" width="20" height="12" rx="2"/>
+                                <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/>
+                            </svg>
+                            Keyboard first
+                        </h3>
+                        <p>Find, go-to, marks, comments, zoom and menus are all one shortcut away. Press <kbd>F1</kbd> inside the viewer for filter help.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/>
+                                <path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/>
+                            </svg>
+                            AI analyst
+                        </h3>
+                        <p>Ask questions about the loaded capture with an OpenAI-compatible model, or open the analyst inside the traffic map to explain the live graph and trace a selection. The <strong>◆ Triage</strong> suggestion runs the local detectors first and gives their evidence to the model for a grounded explanation. Inspect any packet with a local dossier or a deep, field-level AI analysis backed by read-only packet tools and clickable frame citations. Suggested filters, jumps, panels and map moves apply only when you approve them.</p>
+                    </article>
+                    <article class="pv-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9"/>
+                                <path d="M12 3a9 9 0 0 0 0 18c1.7 0 2-1 1.2-2.2-.8-1.2-.2-2.8 1.5-2.8H18a3 3 0 0 0 3-3"/>
+                                <circle cx="7.5" cy="11" r="1"/>
+                                <circle cx="10" cy="7" r="1"/>
+                                <circle cx="14.5" cy="6.5" r="1"/>
+                            </svg>
+                            Works offline
+                        </h3>
+                        <p>No server or account is required. Open <code>index.html</code> or serve the folder and analyze captures anywhere.</p>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer class="pv-foot">
+            <span>Captures are parsed locally · triage runs locally · AI context goes only to your provider</span>
+            <span>NETMAP · filters, columns, colors, case data and AI settings stored locally</span>
+        </footer>
+    </div>
+
+    <noscript>
+        <p class="pv-noscript">NETMAP needs JavaScript enabled to parse capture files locally.</p>
+    </noscript>
+
+    <input type="file" id="fileInput"
+           accept=".pcap,.pcapng,.cap,application/vnd.tcpdump.pcap,application/x-pcapng"
+           aria-label="Choose a capture file" hidden>
+
+    <script src="static/pcap_triage.js"></script>
+    <script src="static/pcap_viewer.js"></script>
+    <script src="static/pcap_ai.js"></script>
+    <script src="static/pcap_investigate.js"></script>
+    <script src="samples/sample.js"></script>
+    <script src="static/app.js"></script>
+</body>
+</html>
